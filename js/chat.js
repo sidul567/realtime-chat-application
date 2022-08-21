@@ -16,10 +16,14 @@ let update = document.querySelector('.update');
 let voice = document.querySelector('.typing-area .voice');
 let voiceIcon = document.querySelector('.typing-area .voice i');
 let typingBox = document.querySelector('.typing-box');
+let emojiSetIcon = document.querySelector('.emojiSet i')
+let emojiSetList = document.querySelector('.emojiSet .emoji-list')
 let isMouseDown = false;
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
+    // let formData = new FormData(form);
+    // sendMessage(formData);
 })
 
 chatBox.addEventListener('mouseenter', () => {
@@ -418,10 +422,38 @@ function emojiIcon(emoji){
     document.addEventListener('click', (e) => {
         if (e.target.getAttribute('data-id') !=  emoji.getAttribute('data-id')) {
             emojiList.classList.remove('show');
-            // console.log(emoji.getAttribute('data-id'));
-            // console.log("remove!");
         }
     })
+
+    // Get current emoji
+    let currentEmoji;
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', 'php/getCurrentEmoji.php', false);
+
+    xhr.onload = () => {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+            if (xhr.status == 200) {
+                currentEmoji = xhr.response.trim();
+            }
+        }
+    }
+    let formData = new FormData();
+    formData.append("msgId", emoji.getAttribute('data-id'));
+    xhr.send(formData);
+
+    let emojiItems = emojiList.querySelectorAll('.emoji-item');
+    let emojiItem;
+    
+    // Set data emoji
+    emojiItems.forEach(emojiItem2=>{
+        emojiItem2.classList.remove("active");
+        if(currentEmoji == emojiItem2.innerHTML.trim()){
+            emojiItem = emojiItem2;
+        }
+    })
+    if(emojiItem){
+        emojiItem.classList.add("active");
+    }
 }
 
 function emojiItem(e){
@@ -441,12 +473,7 @@ function validateEmoji(msgId,emoji,showReact){
     xhr.onload = () => {
         if (xhr.readyState == XMLHttpRequest.DONE) {
             if (xhr.status == 200) {
-                let currentEmojiCode = "";
-                if(xhr.response){
-                    currentEmojiCode = xhr.response.codePointAt(0).toString(16);
-                }
-                let emojiCode = emoji.codePointAt(0).toString(16);
-                if(currentEmojiCode == emojiCode){
+                if(xhr.response.trim() == emoji.trim()){
                     insertEmoji(msgId,"");
                     showReact.innerHTML = "";
                 }else{
@@ -470,4 +497,38 @@ function insertEmoji(msgId,emoji){
     formData.append("msgId", msgId);
     formData.append("emoji", emoji);
     xhr.send(formData);
+}
+
+// Emoji Set
+function emojiSet(){
+    for(let i=128512;i<=128580;i++){
+        if(i==128515){
+            emojiSetList.innerHTML += `<div class="emoji-item" onclick="addEmojiToInput(this)">&#129315;</div>`
+        }
+        emojiSetList.innerHTML += `<div class="emoji-item" onclick="addEmojiToInput(this)">&#${i};</div>`
+    }
+    for(let i=128147;i<=128159;i++){
+        emojiSetList.innerHTML += `<div class="emoji-item" onclick="addEmojiToInput(this)">&#${i};</div>`
+    }
+    emojiSetList.innerHTML += `<div class="emoji-item" onclick="addEmojiToInput(this)">&#10084;</div>`
+}
+emojiSet();
+
+emojiSetIcon.addEventListener('click',()=>{
+    emojiSetList.classList.toggle('show');
+    document.addEventListener('click', (e) => {
+        let findEmoji = false;
+        emojiSetList.querySelectorAll('.emoji-item').forEach(emojiItem=>{
+            if(emojiItem == e.target){
+                findEmoji = true;
+            }
+        })
+        if(e.target !=  emojiSetIcon && e.target != emojiSetList && !findEmoji){
+            emojiSetList.classList.remove('show');
+        }
+    })
+})
+
+function addEmojiToInput(e){
+    message.value += e.innerHTML;
 }

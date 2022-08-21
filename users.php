@@ -7,6 +7,7 @@
 
 <?php include_once "php/header.php"; ?>
 <body>
+    <?php include_once 'weather.php'; ?>
     <div class="wrapper">
         <section class="users">
             <header>
@@ -39,6 +40,7 @@
     </div>
 
     <!-- External JS -->
+    <script src="js/weather.js"></script>
     <script src="js/users.js"></script>
 </body>
 </html>

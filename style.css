@@ -253,10 +253,10 @@ body{
     color: #333;
     cursor: pointer;
     position: relative;
-    
 }
 .chat-area header .dropdown i{
     font-size: 20px;
+    padding:  0 5px;
 }
 .chat-area header .dropdown .dropdown-list.show{
     transform: scale(1);
@@ -271,6 +271,7 @@ body{
     border-radius: 5px;
     right: 0;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    z-index: 1;
 }
 .chat-area header .dropdown .dropdown-list .dropdown-item{
     font-size: 17px;
@@ -394,7 +395,7 @@ body{
     border-radius: 5px;
 }
 .chat-area .typing-area input:focus{
-    flex: 0 0 calc(100% - 58px);
+    flex: 0 0 calc(100% - 90px);
 }
 .chat-area .typing-area button{
     width: 55px;
@@ -504,11 +505,15 @@ body{
 }
 
 .emoji .emoji-list .emoji-item:hover {
-    background-color: #f8f9fa;
+    background-color: #ebebeb;
     color: #16181b;
 }
 
-.details {
+.emoji .emoji-list .emoji-item.active{
+    background-color: #ebebeb;
+}
+
+.chat-box .incoming .details {
     position: relative;
 }
 
@@ -520,9 +525,118 @@ body{
 
 .show-react {
     position: absolute;
-    right: -10px;
-    bottom: -9px;
-    font-size: 20px;
+    right: 7px;
+    bottom: -12px;
+    font-size: 16px;
     background: #f7f7f7;
     border-radius: 50%;
+}
+
+.chat-box .incoming, .chat-box .outgoing{
+    position: relative;
+}
+
+.chat-box .seen-logo{
+    position: absolute;
+    right: -20px;
+    bottom: -3px;
+    display: none;
+}
+
+.chat-box .incoming .seen-logo{
+    right: -105px;
+}
+
+.chat-box .seen-logo.active{
+    display: block;
+}
+
+.chat-box .seen-logo img{
+    width: 20px;
+    height: 20px;
+}
+
+/* Weather Section */
+.weather{
+    position: absolute;
+    right: 100px;
+    top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0 10px;
+}
+.weather .weather-icon img{
+    width: 40px;
+}
+.weather .temperature span{
+    font-size: 14px;
+    font-weight: 500;
+}
+.weather .description{
+    font-size: 10px;
+}
+.weather .city{
+    margin-left: 5px;
+}
+
+/* Emoji Set */
+.emojiSet{
+    position: relative;
+    width: 55px;
+    outline: none;
+    border: none;
+    background-color: #333;
+    color: #fff;
+    border-radius: 0 5px 5px 0;
+    font-size: 19px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.emojiSet .emoji-list.show{
+    transform: scale(1);
+}
+
+.emojiSet .emoji-list {
+    transform: scale(0);
+    transform-origin: bottom left;
+    transition: transform 0.2s ease;
+    position: absolute;
+    background-color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    top: -148px;
+    left: 0px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    z-index: 5;
+    width: 400px;
+    overflow-y: scroll;
+    height: 150px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.emojiSet .emoji-list::-webkit-scrollbar{
+    display: none;
+}
+
+.emojiSet .emoji-list .emoji-item {
+    font-size: 23px;
+    color: #333;
+}
+.emojiSet .emoji-list .emoji-item:focus{
+    outline: none;
+    border: none;
+}
+
+.emojiSet .emoji-list .emoji-item:hover {
+    background-color: #ebebeb;
+    color: #16181b;
+}
+
+.emojiSet .emoji-list .emoji-item.active{
+    background-color: #ebebeb;
 }

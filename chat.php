@@ -7,6 +7,7 @@ if (!isset($_SESSION['uid'])) {
 
 <?php include_once "php/header.php"; ?>
 <body>
+    <?php include_once 'weather.php'; ?>
     <div class="wrapper">
         <section class="chat-area">
             <header>
@@ -50,6 +51,11 @@ if (mysqli_num_rows($sql) > 0) {
             <form action="#" class="typing-area">
                 <input type="text" name="incoming_id" class="incoming_id" value="<?php echo $uid; ?>" hidden>
                 <input type="text" name="outgoing_id" class="outgoing_id" value="<?php echo $_SESSION['uid']; ?>" hidden>
+                <div class="emojiSet">
+                    <i class="fa-solid fa-face-smile-beam"></i>
+                    <div class="emoji-list">
+                    </div>
+                </div>
                 <input type="text" name="message" placeholder="Type a message..." class="message" autocomplete="off">
                 <button class="send"><i class="fab fa-telegram-plane"></i></button>
                 <button class="voice"><i class="fa-solid fa-microphone"></i></button>
@@ -57,6 +63,7 @@ if (mysqli_num_rows($sql) > 0) {
         </section>
     </div>
 
+    <script src="js/weather.js"></script>
     <script src="js/chat.js"></script>
 </body>
 </html>

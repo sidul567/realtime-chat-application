@@ -6,6 +6,10 @@ if (isset($_SESSION['uid'])) {
     $incoming_id = mysqli_real_escape_string($db, $_POST['incoming_id']);
     $outgoing_id = mysqli_real_escape_string($db, $_POST['outgoing_id']);
 
+    // Find last seen message;
+    $sql3 = mysqli_query($db,"SELECT msg_id FROM messages  WHERE ((incoming_id = '{$incoming_id}' AND outgoing_id = '{$outgoing_id}') OR (outgoing_id = '{$incoming_id}' AND incoming_id = '{$outgoing_id}')) AND seen = 'yes' ORDER BY msg_id DESC LIMIT 1");
+    $row3 = mysqli_fetch_assoc($sql3);
+
     $sql = mysqli_query($db, "SELECT * FROM messages LEFT JOIN users ON messages.outgoing_id = users.uid WHERE (incoming_id = '{$incoming_id}' AND outgoing_id = '{$outgoing_id}') OR (outgoing_id = '{$incoming_id}' AND incoming_id = '{$outgoing_id}')");
     $output = "";
     if (mysqli_num_rows($sql) > 0) {
@@ -26,6 +30,7 @@ if (isset($_SESSION['uid'])) {
             }else{
                 $msg = $row['message'];
             }
+
             // Unread message
             $sql2 = mysqli_query($db,"SELECT * FROM messages WHERE (incoming_id = '{$outgoing_id}' AND outgoing_id = '{$incoming_id}') ORDER BY msg_id DESC LIMIT 1");
             if(mysqli_num_rows($sql2) > 0){
@@ -35,11 +40,26 @@ if (isset($_SESSION['uid'])) {
 
             $time = explode(",",$row['time']);
             $time = explode(" ",$time[1]);
+
+            // seen message
+            $active = 'class="seen-logo"';
+            if($row3){
+                if($row3['msg_id'] == $row['msg_id']){
+                    $active = 'class="seen-logo active"';
+                }else{
+                    $active = 'class="seen-logo"';
+                }
+            }
+            
+            $sql2 = mysqli_query($db,"SELECT * FROM users WHERE uid = '${incoming_id}'");
+            $row2 = mysqli_fetch_assoc($sql2);
+
             if($outgoing_id == $row['outgoing_id']){
                 $output .= '<div class="chat outgoing">
                     <div class="details">
-                    <p title='.$time[1].$time[2].' class='.$center.'>'.$msg.'</p>
-                    <div class="show-react" data-id='.$row['msg_id'].'>'.$row['emoji'].'</div>
+                        <p title='.$time[1].$time[2].' class='.$center.'>'.$msg.'</p>
+                        <div class="show-react" data-id='.$row['msg_id'].'>'.$row['emoji'].'</div>
+                        <div '.$active.'><img src="php/images/'.$row2['img'].'" alt=""></div>
                     </div>
                 </div>';
             }else{
@@ -50,23 +70,24 @@ if (isset($_SESSION['uid'])) {
                         <div class="emoji">
                             <i class="fa-solid fa-face-smile-beam" onclick="emojiIcon(this)" data-id='.$row['msg_id'].'></i>
                             <div class="emoji-list" data-id='.$row['msg_id'].'>
-                                <div class="emoji-item" onclick="emojiItem(this)">&#128077;
+                                <div class="emoji-item" onclick="emojiItem(this)" data-emoji='.$row['emoji'].'>&#128077;
                                 </div>
-                                <div class="emoji-item" onclick="emojiItem(this)">&#128150;
+                                <div class="emoji-item" onclick="emojiItem(this)" data-emoji='.$row['emoji'].'>&#128150;
                                 </div>
-                                <div class="emoji-item" onclick="emojiItem(this)">&#129315;
+                                <div class="emoji-item" onclick="emojiItem(this)" data-emoji='.$row['emoji'].'>&#129315;
                                 </div>
-                                <div class="emoji-item" onclick="emojiItem(this)">&#128558;
+                                <div class="emoji-item" onclick="emojiItem(this)" data-emoji='.$row['emoji'].'>&#128558;
                                 </div>
-                                <div class="emoji-item" onclick="emojiItem(this)">&#128549;
+                                <div class="emoji-item" onclick="emojiItem(this)" data-emoji='.$row['emoji'].'>&#128549;
                                 </div>
-                                <div class="emoji-item" onclick="emojiItem(this)">&#128545;
+                                <div class="emoji-item" onclick="emojiItem(this)" data-emoji='.$row['emoji'].'>&#128545;
                                 </div>
                             </div>
                         </div>
                     </div>
                     <p title='.$time[1].$time[2].' class='.$center.'>'.$msg.'</p>
                     <div class="show-react" data-id='.$row['msg_id'].'>'.$row['emoji'].'</div>
+                    <div '.$active.'><img src="php/images/'.$row2['img'].'" alt=""></div>
                 </div>
                 </div>';
             }

@@ -38,7 +38,7 @@ if (isset($_SESSION['uid'])) {
         $fileExplode = explode('.',$fileName);
         $fileExtension = end($fileExplode);
 
-        $extensions = ['pdf','doc','docx','xls','xlsx','ppt','pptx','zip','rar'];
+        $extensions = ['pdf','doc','docx','xls','xlsx','ppt','pptx','zip','rar','txt'];
         if(in_array($fileExtension,$extensions)){
             if(!is_dir("files")){
                 mkdir("files");
