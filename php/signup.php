@@ -5,7 +5,7 @@
     $fname = mysqli_real_escape_string($db,$_POST['fname']);
     $lname = mysqli_real_escape_string($db,$_POST['lname']);
     $email = mysqli_real_escape_string($db,$_POST['email']);
-    $password = mysqli_real_escape_string($db,$_POST['password']);
+    $password = mysqli_real_escape_string($db,md5($_POST['password']));
     if(!empty($fname) && !empty($lname) && !empty($email) && !empty($password)){
         // Check email address exist or not
         if(filter_var($email,FILTER_VALIDATE_EMAIL)){

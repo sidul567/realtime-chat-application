@@ -47,7 +47,6 @@ if (mysqli_num_rows($sql) > 0) {
                     <span></span>
                 </div>
             </div>
-            <input type="text" name="update" class="update" hidden>
             <form action="#" class="typing-area">
                 <input type="text" name="incoming_id" class="incoming_id" value="<?php echo $uid; ?>" hidden>
                 <input type="text" name="outgoing_id" class="outgoing_id" value="<?php echo $_SESSION['uid']; ?>" hidden>

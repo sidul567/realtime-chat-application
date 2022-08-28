@@ -559,15 +559,16 @@ body{
 /* Weather Section */
 .weather{
     position: absolute;
-    right: 100px;
+    right: 10px;
     top: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-direction: column;
     gap: 0 10px;
 }
 .weather .weather-icon img{
-    width: 40px;
+    width: 30px;
 }
 .weather .temperature span{
     font-size: 14px;

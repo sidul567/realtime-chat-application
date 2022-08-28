@@ -3,7 +3,7 @@
     <!-- Sign Up Form -->
     <div class="wrapper">
         <section class="form signup">
-            <header>Realtime Chat Application</header>
+            <header>Chat Application</header>
             <form action="#" enctype="multipart/form-data">
                 <div class="error-text">This is an error message.</div>
                 <div class="names">

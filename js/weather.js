@@ -25,11 +25,8 @@ function weather(api){
             if (xhr.status == 200) {
                 let data = JSON.parse(xhr.response);
                 let temp = Math.round(data['main']['temp']);
-                let city = data['name'].split(" ");
-                let desc = data['weather'][0]['main'];
                 let id = data['weather'][0]['id'];
-                number.innerHTML = temp+" °C - "+desc;
-                cityLocation.innerHTML = city[0];
+                number.innerHTML = temp+" °C";
                 if(id == 800){
                     weatherIcon.src = "weather-icons/clear.svg"
                 }else if(id>=200 && id<=232){

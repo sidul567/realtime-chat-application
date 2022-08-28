@@ -3,7 +3,7 @@
     include_once "db.php";
 
     $email = mysqli_real_escape_string($db,$_POST['email']);
-    $password = mysqli_real_escape_string($db,$_POST['password']);
+    $password = mysqli_real_escape_string($db,md5($_POST['password']));
 
     if(!empty($email) && !empty($password)){
         $sql = mysqli_query($db,"SELECT * FROM users WHERE email='$email' AND password='$password'");

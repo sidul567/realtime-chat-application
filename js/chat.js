@@ -12,18 +12,14 @@ let incoming_id = document.querySelector('.incoming_id');
 let outgoing_id = document.querySelector('.outgoing_id');
 let fid = document.querySelector('.fid');
 let activeStatus = document.querySelector('.chat-area header .details p')
-let update = document.querySelector('.update');
 let voice = document.querySelector('.typing-area .voice');
 let voiceIcon = document.querySelector('.typing-area .voice i');
 let typingBox = document.querySelector('.typing-box');
 let emojiSetIcon = document.querySelector('.emojiSet i')
 let emojiSetList = document.querySelector('.emojiSet .emoji-list')
 let isMouseDown = false;
-
 form.addEventListener('submit', (e) => {
     e.preventDefault();
-    // let formData = new FormData(form);
-    // sendMessage(formData);
 })
 
 chatBox.addEventListener('mouseenter', () => {
@@ -332,23 +328,26 @@ function getNotification(data) {
 
 // Update Active Status
 document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState == 'visible') {
-        update.value = 'Active Now';
-    } else if(document.visibilityState == 'hidden') {
-        update.value = new Date().toLocaleString();   
-    }
-    let formData = new FormData();
-    formData.append('update', update.value);
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', 'php/updateActiveStatus.php', true);
-    xhr.onload = () => {
-        if (xhr.readyState = XMLHttpRequest.DONE) {
-            if (xhr.status == 200) {
-                let data = xhr.response;
+    setTimeout(()=>{
+        let update;
+        if (document.visibilityState == 'visible') {
+            update = 'Active Now';
+        } else {
+            update = new Date().toLocaleString();
+        }
+        let formData = new FormData();
+        formData.append('update', update);
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', 'php/updateActiveStatus.php', true);
+        xhr.onload = () => {
+            if (xhr.readyState = XMLHttpRequest.DONE) {
+                if (xhr.status == 200) {
+                    let data = xhr.response;
+                }
             }
         }
-    }
-    xhr.send(formData);
+        xhr.send(formData);
+    },50)
 })
 
 // Focus Input Field
